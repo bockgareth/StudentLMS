@@ -97,7 +97,14 @@ session_start();
                         $mail->Password = 'student21!';
                         $mail->setFrom('no-reply@studentlms.com');
                         $mail->Subject = 'Password reset';
-                        $mail->Body = 'Good day. Your new password is '.$pass;
+                        $mail->Body = '
+                            <html>
+                            <body>
+                            <h4>Good day</h4>
+                            <p>Your new password is '.$pass.'</p>
+                            </body>
+                            </html>
+                        ';
                         $mail->addAddress($_SESSION['email']);
 
                         $mail->send();
