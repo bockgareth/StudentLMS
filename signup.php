@@ -52,7 +52,7 @@
                                 <label for="cell">Cellphone</label>
                             </div>
                             <div class="input-field col s12">
-                                <input id="pass" type="password" name="pass" value="<?php echo $pass ?>" required>
+                                <input id="pass" type="password" minlength="8" name="pass" value="<?php echo $pass ?>" required>
                                 <label for="pass">Password</label>
                             </div>
                             <input type="submit" name="form" value="Sign up" class="btn">
