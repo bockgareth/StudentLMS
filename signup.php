@@ -86,7 +86,7 @@
                                 $conn->query($sql);
                                 echo "<p>Student '".$first." ".$last."' added &#9989;</p><br>";
                                 echo "<h4>Thank you for signing up!</h4>";
-                                ?><a href="login.php">Login</a> <?php
+                                ?><a href="login.php" class="btn">Login</a> <?php
                             }
 
                         }

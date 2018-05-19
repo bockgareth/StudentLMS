@@ -6,6 +6,7 @@
  * Time: 11:47 AM
  */
 
+session_start();
 ?>
 
 <!doctype html>
@@ -44,6 +45,7 @@
                                     <label for="pass">Password</label>
                                 </div>
                                 <input type="submit" name="form" value="Login" class="btn">
+                                <a href="recovery.php" class="btn">Password recovery</a>
                             </form>
                         </div><?php
                     }
@@ -64,9 +66,24 @@
 
                                 while ($row = $result->fetch_assoc()) {
                                     if ($row["email"] == $email) {
+
+                                        $_SESSION['first'] = $row["first_name"];
+                                        $_SESSION['last'] = $row["last_name"];
+                                        $_SESSION['address'] = $row["email"];
+                                        $_SESSION['cell'] = $row["cellphone"];
                                         ?>
-                                        <form action="students.php" method="post">
+                                        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" class="center">
                                             <h5>Logged in as <?php echo $row["first_name"]." ".$row["last_name"]; ?></h5>
+                                            <h4>First name:</h4>
+                                            <h2><?php echo $row["first_name"]; ?></h2>
+                                            <h4>Last name:</h4>
+                                            <h2><?php echo $row["last_name"]; ?></h2>
+                                            <h4>Email:</h4>
+                                            <h2><?php echo $row["email"]; ?></h2>
+                                            <h4>Cellphone:</h4>
+                                            <h2><?php echo $row["cellphone"]; ?></h2>
+                                            <a href="login.php" class="btn">Log out</a>
+                                            <input type="submit" name="data" value="Email user data">
                                         </form>
                                         <?php
                                     } else {
@@ -82,6 +99,41 @@
                         }
                     } else {
                         loadForm();
+                    }
+
+                    if (isset($_POST['data'])) {
+                        require_once('PHPMailer/PHPMailerAutoload.php');
+
+                        $mail = new PHPMailer();
+                        $mail->isSMTP();
+                        $mail->SMTPAuth = true;
+                        $mail->SMTPSecure = 'ssl';
+                        $mail->Host = 'smtp.gmail.com';
+                        $mail->Port = '465';
+                        $mail->isHTML();
+                        $mail->Username = 'studentlearnersystem@gmail.com';
+                        $mail->Password = 'student21!';
+                        $mail->setFrom('no-reply@studentlms.com');
+                        $mail->Subject = 'Student data';
+                        $mail->Body = '
+                            <html>
+                            <body>
+                                <h4>First name:</h4>
+                                <h2>'.$_SESSION['first'].'</h2>
+                                <h4>Last name:</h4>
+                                <h2>'.$_SESSION['last'].'</h2>
+                                <h4>Email:</h4>
+                                <h2>'.$_SESSION['email'].'</h2>
+                                <h4>Cellphone:</h4>
+                                <h2>'.$_SESSION['cell'].'</h2>
+                            </body>
+                            </html>
+                        ';
+                        $mail->addAddress($_SESSION['address']);
+
+                        $mail->send();
+
+                        echo "Email has been sent to ".$_SESSION['address'];
                     }
                     ?>
                 </div>
