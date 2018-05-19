@@ -25,8 +25,8 @@
                 <div class="card-content center">
                     <h2>Welcome to the Student LMS</h2>
                     <h5>Managing your students, has never been easier!</h5><br><br>
-                    <h5>Login as either Security or a Student</h5><br>
-                    <a class="btn" href="login.php">Login</a>
+                    <a class="btn" href="signin.php">Login as Security</a>
+                    <a class="btn" href="login.php">Login as Student</a>
                 </div>
             </div>
         </div>
