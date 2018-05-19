@@ -133,7 +133,7 @@ session_start();
 
                         $mail->send();
 
-                        echo "Email has been sent to ".$_SESSION['address'];
+                        echo "<h4>Email has been sent to ".$_SESSION['address']."</h4>";
                     }
                     ?>
                 </div>
