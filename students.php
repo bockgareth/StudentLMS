@@ -47,6 +47,7 @@
                                         <th>Email</th>
                                         <th>Cellphone</th>
                                         <th>Picture</th>
+                                        <th>Present</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -57,6 +58,8 @@
                                         <td><?php echo $row["email"]; ?></td>
                                         <td><?php echo $row["cellphone"]; ?></td>
                                         <td><a href="#modal<?php echo $row['id'] ?>" class="btn waves-effect waves-light modal-trigger">Show picture</a></td>
+                                        <td id="present<?php echo $row['id']; ?>">&#10060;</td>
+                                        <td><a class="btn-flat" onclick="studentPresent(<?php echo $row['id']; ?>)">Present</a></td>
                                     </tr>
                                     <div id="modal<?php echo $row['id'] ?>" class="modal center">
                                         <div class="modal-content">
@@ -85,7 +88,14 @@
 <script type="text/javascript">
     $(function () {
        $('.modal').modal();
+
+
     });
+    function studentPresent(id) {
+        let mark = document.querySelector("#present" +id);
+
+        mark.innerHTML = '&#9989';
+    }
 </script>
 </body>
 </html>
