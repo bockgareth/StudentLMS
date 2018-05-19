@@ -10,6 +10,4 @@ $conn = @new mysqli("localhost", "root", "", "StudentLMS");
 
 if (!$conn) {
     echo "Unable to connect to database" . $conn->connect_errno;
-} else {
-    echo "Connection established...";
 }

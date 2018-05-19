@@ -41,14 +41,48 @@
                                 </div>
                                 <div class="input-field col s12">
                                     <input id="pass" type="password" name="pass" value="<?php echo $pass ?>" required>
-                                    <label for="pass">Email</label>
+                                    <label for="pass">Password</label>
                                 </div>
                                 <input type="submit" name="form" value="Login" class="btn">
                             </form>
                         </div><?php
                     }
 
-                    loadForm();
+                    if (isset($_POST["form"])) {
+                        include "connection.php";
+
+                        $email = htmlentities($_POST["email"]);
+                        $pass = htmlentities($_POST["pass"]);
+
+
+                        $sql = "select * from students where email = '".$email."'";
+
+                        if ($result = $conn->query($sql)) {
+
+                            $rowCount = $result->num_rows;
+                            if ($rowCount > 0) {
+
+                                while ($row = $result->fetch_assoc()) {
+                                    if ($row["email"] == $email) {
+                                        ?>
+                                        <form action="students.php" method="post">
+                                            <h5>Logged in as <?php echo $row["first_name"]." ".$row["last_name"]; ?></h5>
+                                        </form>
+                                        <?php
+                                    } else {
+                                        echo "<br><p>Failed to login</p><br>";
+                                        loadForm($email, $pass);
+                                    }
+
+                                }
+                            } else { ?>
+                                <br><h4>This user is not registered. Would you like to sign up?</h4><br>
+                                <a href="signup.php"><input type="button" value="Sign up" class="btn"></a><?php
+                            }
+                        }
+                    } else {
+                        loadForm();
+                    }
                     ?>
                 </div>
             </div>

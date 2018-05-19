@@ -3,11 +3,8 @@
  * Created by PhpStorm.
  * User: Gareth Bock
  * Date: 5/19/2018
- * Time: 11:38 AM
+ * Time: 12:20 PM
  */
-
-
-
 ?>
 
 <!doctype html>
@@ -23,34 +20,17 @@
           rel="stylesheet"
           integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
           crossorigin="anonymous">
-    <title>Install complete</title>
+    <title>Install Wizard</title>
 </head>
 <body>
-
 <div class="container">
     <div class="row">
         <div class="col s12">
             <div class="card">
                 <div class="card-content center">
-                    <h3>Database successfully populated</h3><br>
-                    <h5>Proceed to Login?<h5><br><br>
-                    <a href="login.php" class="btn">Login</a><br><br>
-                    <?php
-
-                    include "connection.php";
-
-                    $users = file("students.csv");
-
-                    foreach ($users as $user) {
-                        $data = explode(",", $user);
-                        $sql = "insert into students (first_name, last_name, email, cellphone, password)
-			                    values ('".$data[0]."', '".$data[1]."', '".$data[2]."', '".$data[3]."', '".$data[4]."')";
-
-                        $conn->query($sql);
-                        echo "<p>Student '".$data[0]."' added &#9989;</p><br>";
-
-                    }
-                    ?>
+                    <h3>Welcome to the Student Learner Management System</h3><br>
+                    <h5>Would you like to initialize the database?<h5><br><br>
+                    <a href="initialize-database.php" class="btn">INIT DATABASE</a>
                 </div>
             </div>
         </div>
@@ -64,4 +44,3 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 </body>
 </html>
-
