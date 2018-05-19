@@ -6,6 +6,31 @@
  * Time: 4:33 PM
  */
 
+if(isset($_POST["attendance"])) {
+    $attend = $_POST["attend"];
+
+    include "connection.php";
+
+    $sql = "select * from students where id ='".$attend."'";
+
+    $result = $conn->query($sql);
+
+    $row = $result->fetch_assoc();
+
+
+    $newSql = "insert into attendance (first_name, last_name, email, cellphone)
+			values ('".$row['first_name']."', '".$row['last_name']."', '".$row['email']."', '".$row['cellphone']."')";
+
+    $exist = $conn->query("select * from attendance where email = '".$row['email']."'");
+
+    $rowCount = $exist->num_rows;
+
+    if ($rowCount ==  0) {
+        $conn->query($newSql);
+    }
+
+
+}
 ?>
 
 <!doctype html>
@@ -36,6 +61,13 @@
 
                     $sql = "select * from students";
 
+                    function updateStudent() {
+
+                        echo "Hello";
+
+                    }
+
+
                     if ($result = $conn->query($sql)) {
                         $rowCount = $result->num_rows;
                         if ($rowCount > 0) { ?>
@@ -58,8 +90,13 @@
                                         <td><?php echo $row["email"]; ?></td>
                                         <td><?php echo $row["cellphone"]; ?></td>
                                         <td><a href="#modal<?php echo $row['id'] ?>" class="btn waves-effect waves-light modal-trigger">Show picture</a></td>
-                                        <td id="present<?php echo $row['id']; ?>">&#10060;</td>
-                                        <td><a class="btn-flat" onclick="studentPresent(<?php echo $row['id']; ?>)">Present</a></td>
+                                        <td id="present<?php echo $row['id'] ?>"><a class="btn-flat left" onclick="studentPresent(<?php echo $row['id'] ?>)">&#10060;</a></td>
+                                        <td>
+                                            <form action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
+                                                <input type="submit" name="attendance" class="btn-flat" value="mark present">
+                                                <input type="hidden" value="<?php echo $row['id'] ?>" name="attend">
+                                            </form>
+                                        </td>
                                     </tr>
                                     <div id="modal<?php echo $row['id'] ?>" class="modal center">
                                         <div class="modal-content">
@@ -92,9 +129,19 @@
 
     });
     function studentPresent(id) {
-        let mark = document.querySelector("#present" +id);
-
+        let mark = document.querySelector("#present"+id);
         mark.innerHTML = '&#9989';
+    }
+    function updateStudent() {
+        $.ajax({
+            type: "POST",
+            url: 'your_url/ajax.php',
+            data:{action:'students.php'},
+            success:function() {
+                alert(123);
+            }
+
+        });
     }
 </script>
 </body>
