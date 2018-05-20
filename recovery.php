@@ -34,14 +34,14 @@ session_start();
                     function loadForm($email = "") { ?>
                         <span class="card-title">Password Recovery. Please enter you email address</span>
                         <div class="row">
-                            <form action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
-                                <div class="input-field col s12">
-                                    <input id="email" type="text" name="email" value="<?php echo $email ?>" required>
-                                    <label for="email">Email</label>
-                                </div>
-                                <input type="submit" name="form" value="reset" class="btn">
-                                <a href="login.php" class="btn">Login</a>
-                            </form>
+                        <form action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
+                            <div class="input-field col s12">
+                                <input id="email" type="text" name="email" value="<?php echo $email ?>" required>
+                                <label for="email">Email</label>
+                            </div>
+                            <input type="submit" name="form" value="reset" class="btn">
+                            <a href="login.php" class="btn">Login</a>
+                        </form>
                         </div><?php
                     }
 
@@ -52,11 +52,12 @@ session_start();
 
                         $_SESSION['email'] = $email;
 
-                        $sql = "select * from students where email = '".$email."'";
+                        $sql = "select * from students where email = '" . $email . "'";
 
                         if ($result = $conn->query($sql)) {
                             $rowCount = $result->num_rows;
-                            if ($rowCount > 0) { unset($_POST["form"]); ?>
+                            if ($rowCount > 0) {
+                                unset($_POST["form"]); ?>
                                 <span class="card-title">Enter new password</span>
                                 <form action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
                                     <div class="input-field col s12">
@@ -80,7 +81,7 @@ session_start();
                     if (isset($_POST["newPassword"])) {
                         $pass = htmlentities($_POST['password']);
                         $hashed = md5($pass);
-                        $sql = "update students set password = '".$hashed."' where email = '".$_SESSION['email']."'";
+                        $sql = "update students set password = '" . $hashed . "' where email = '" . $_SESSION['email'] . "'";
 
                         include "connection.php";
 
@@ -101,7 +102,7 @@ session_start();
                             <html>
                             <body>
                             <h4>Good day</h4>
-                            <p>Your new password is '.$pass.'</p>
+                            <p>Your new password is ' . $pass . '</p>
                             </body>
                             </html>
                         ';
@@ -120,9 +121,9 @@ session_start();
 </div>
 
 <script
-    src="https://code.jquery.com/jquery-3.2.1.js"
-    integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
-    crossorigin="anonymous"></script>
+        src="https://code.jquery.com/jquery-3.2.1.js"
+        integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+        crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 </body>
 </html>

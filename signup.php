@@ -31,7 +31,7 @@
                 <div class="card-content">
                     <?php
 
-                    function loadForm($first = "", $last = "", $email = "", $cell = "", $pass = "") { ?>
+                    function loadForm($first = "", $last = "", $email = "", $pass = "") { ?>
                     <span class="card-title">Please consider signing up</span>
                     <div class="row">
                         <form action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
@@ -46,10 +46,6 @@
                             <div class="input-field col s12">
                                 <input id="email" type="text" name="email" value="<?php echo $email ?>" required>
                                 <label for="email">Email</label>
-                            </div>
-                            <div class="input-field col s12">
-                                <input id="cell" type="text" name="cell" value="<?php echo $cell ?>" required>
-                                <label for="cell">Cellphone</label>
                             </div>
                             <div class="input-field col s12">
                                 <input id="pass" type="password" minlength="8" name="pass" value="<?php echo $pass ?>" required>
@@ -68,7 +64,6 @@
                         $first = htmlentities($_POST["first"]);
                         $last = htmlentities($_POST["last"]);
                         $email = htmlentities($_POST["email"]);
-                        $cell = htmlentities($_POST["cell"]);
                         $pass = md5(htmlentities($_POST["pass"]));
 
                         $sql = "select * from students where email = '".$email."'";
@@ -77,14 +72,15 @@
                             $rowCount = $result->num_rows;
                             if ($rowCount > 0) {
                                 echo "<p>This email address has been taken</p>";
-                                loadForm($first, $last, $email, $cell, $pass);
+                                loadForm($first, $last, $email, $pass);
                             } else {
 
-                                $sql = "insert into students (first_name, last_name, email, cellphone, password)
-			                    values ('".$first."', '".$last."', '".$email."', '".$cell."', '".$pass."')";
+                                $genStudentNo = rand(100000000, 999999999);
+                                $sql = "insert into students (first_name, last_name, email, student_no, password)
+			                    values ('".$first."', '".$last."', '".$email."', '".$genStudentNo."', '".$pass."')";
 
                                 $conn->query($sql);
-                                echo "<p>Student '".$first." ".$last."' added &#9989;</p><br>";
+                                echo "<p>Student '".$first." ".$last."' added with the student number ".$genStudentNo." &#9989;</p><br>";
                                 echo "<h4>Thank you for signing up!</h4>";
                                 ?><a href="login.php" class="btn">Login</a> <?php
                             }

@@ -25,6 +25,16 @@ session_start();
     <title>Student LMS</title>
 </head>
 <body>
+<nav>
+    <div class="nav-wrapper">
+        <div class="container">
+            <a href="#" class="brand-logo">Student LMS</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="index.php">Login</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 <div class="container">
     <div class="row">
         <div class="col s12">
@@ -32,13 +42,13 @@ session_start();
                 <div class="card-content">
                     <?php
 
-                    function loadForm($email = "", $pass = "") { ?>
+                    function loadForm($number = "", $pass = "") { ?>
                         <span class="card-title">Please consider logging in</span>
                         <div class="row">
                             <form action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
                                 <div class="input-field col s12">
-                                    <input id="email" type="text" name="email" value="<?php echo $email ?>" required>
-                                    <label for="email">Email</label>
+                                    <input id="studentNo" type="text" name="studentNo" value="<?php echo $number ?>" required>
+                                    <label for="studentNo">Student number</label>
                                 </div>
                                 <div class="input-field col s12">
                                     <input id="pass" type="password" name="pass" value="<?php echo $pass ?>" required>
@@ -46,6 +56,7 @@ session_start();
                                 </div>
                                 <input type="submit" name="form" value="Login" class="btn">
                                 <a href="recovery.php" class="btn">Password recovery</a>
+                                <a href="signup.php" class="btn">Sign up</a>
                             </form>
                         </div><?php
                     }
@@ -53,11 +64,11 @@ session_start();
                     if (isset($_POST["form"])) {
                         include "connection.php";
 
-                        $email = htmlentities($_POST["email"]);
+                        $studentNo = htmlentities($_POST["studentNo"]);
                         $pass = htmlentities($_POST["pass"]);
 
 
-                        $sql = "select * from students where email = '".$email."'";
+                        $sql = "select * from students where student_no = '".$studentNo."'";
 
                         if ($result = $conn->query($sql)) {
 
@@ -65,12 +76,12 @@ session_start();
                             if ($rowCount > 0) {
 
                                 while ($row = $result->fetch_assoc()) {
-                                    if ($row["email"] == $email) {
+                                    if ($row["student_no"] == $studentNo) {
 
                                         $_SESSION['first'] = $row["first_name"];
                                         $_SESSION['last'] = $row["last_name"];
                                         $_SESSION['address'] = $row["email"];
-                                        $_SESSION['cell'] = $row["cellphone"];
+                                        $_SESSION['studentNo'] = $row["student_no"];
                                         ?>
                                         <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" class="center">
                                             <h5>Logged in as <?php echo $row["first_name"]." ".$row["last_name"]; ?></h5>
@@ -80,15 +91,15 @@ session_start();
                                             <h2><?php echo $row["last_name"]; ?></h2>
                                             <h4>Email:</h4>
                                             <h2><?php echo $row["email"]; ?></h2>
-                                            <h4>Cellphone:</h4>
-                                            <h2><?php echo $row["cellphone"]; ?></h2>
+                                            <h4>Student number:</h4>
+                                            <h2><?php echo $row["student_no"]; ?></h2>
                                             <a href="login.php" class="btn">Log out</a>
-                                            <input type="submit" name="data" value="Email user data">
+                                            <input class="btn" type="submit" name="data" value="Email user data">
                                         </form>
                                         <?php
                                     } else {
                                         echo "<br><p>Failed to login</p><br>";
-                                        loadForm($email, $pass);
+                                        loadForm($studentNo, $pass);
                                     }
 
                                 }
@@ -124,8 +135,8 @@ session_start();
                                 <h2>'.$_SESSION['last'].'</h2>
                                 <h4>Email:</h4>
                                 <h2>'.$_SESSION['email'].'</h2>
-                                <h4>Cellphone:</h4>
-                                <h2>'.$_SESSION['cell'].'</h2>
+                                <h4>Student number:</h4>
+                                <h2>'.$_SESSION['studentNo'].'</h2>
                             </body>
                             </html>
                         ';

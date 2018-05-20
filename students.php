@@ -6,28 +6,31 @@
  * Time: 4:33 PM
  */
 
-if(isset($_POST["attendance"])) {
+if (isset($_POST["attendance"])) {
     $attend = $_POST["attend"];
 
     include "connection.php";
 
-    $sql = "select * from students where id ='".$attend."'";
+    $sql = "select * from students where id ='" . $attend . "'";
 
     $result = $conn->query($sql);
 
     $row = $result->fetch_assoc();
 
 
-    $newSql = "insert into attendance (first_name, last_name, email, cellphone)
-			values ('".$row['first_name']."', '".$row['last_name']."', '".$row['email']."', '".$row['cellphone']."')";
+    $newSql = "insert into attendance (first_name, last_name, email, student_no)
+			values ('" . $row['first_name'] . "', '" . $row['last_name'] . "', '" . $row['email'] . "', '" . $row['student_no'] . "')";
 
-    $exist = $conn->query("select * from attendance where email = '".$row['email']."'");
+    $exist = $conn->query("select * from attendance where email = '" . $row['email'] . "'");
 
     $rowCount = $exist->num_rows;
 
-    if ($rowCount ==  0) {
+    if ($rowCount == 0) {
         $conn->query($newSql);
+        $conn->query("update students set present = '1' where email = '".$row['email']."'");
     }
+
+
 
 
 }
@@ -49,7 +52,16 @@ if(isset($_POST["attendance"])) {
     <title>Students</title>
 </head>
 <body>
-
+<nav>
+    <div class="nav-wrapper">
+        <div class="container">
+            <a href="#" class="brand-logo">Student LMS</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="index.php">Login</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 <div class="container">
     <div class="row">
         <div class="col s12">
@@ -61,26 +73,19 @@ if(isset($_POST["attendance"])) {
 
                     $sql = "select * from students";
 
-                    function updateStudent() {
-
-                        echo "Hello";
-
-                    }
-
-
                     if ($result = $conn->query($sql)) {
                         $rowCount = $result->num_rows;
                         if ($rowCount > 0) { ?>
                             <table>
                                 <thead>
-                                    <tr>
-                                        <th>First name</th>
-                                        <th>Last name</th>
-                                        <th>Email</th>
-                                        <th>Cellphone</th>
-                                        <th>Picture</th>
-                                        <th>Present</th>
-                                    </tr>
+                                <tr>
+                                    <th>First name</th>
+                                    <th>Last name</th>
+                                    <th>Email</th>
+                                    <th>Student no</th>
+                                    <th>Picture</th>
+                                    <th>Present</th>
+                                </tr>
                                 </thead>
                                 <tbody>
                                 <?php while ($row = $result->fetch_assoc()) { ?>
@@ -88,9 +93,19 @@ if(isset($_POST["attendance"])) {
                                         <td><?php echo $row["first_name"]; ?></td>
                                         <td><?php echo $row["last_name"]; ?></td>
                                         <td><?php echo $row["email"]; ?></td>
-                                        <td><?php echo $row["cellphone"]; ?></td>
-                                        <td><a href="#modal<?php echo $row['id'] ?>" class="btn waves-effect waves-light modal-trigger">Show picture</a></td>
-                                        <td id="present<?php echo $row['id'] ?>"><a class="btn-flat left" onclick="studentPresent(<?php echo $row['id'] ?>)">&#10060;</a></td>
+                                        <td><?php echo $row["student_no"]; ?></td>
+                                        <td><a href="#modal<?php echo $row['id'] ?>"
+                                               class="btn waves-effect waves-light modal-trigger">Show picture</a></td>
+                                        <!--<td id="present<?php echo $row['id'] ?>"><a class="btn-flat left"
+                                                                                    onclick="studentPresent(<?php echo $row['id'] ?>)">&#10060;</a>
+                                        </td>-->
+                                        <td>
+                                            <?php if ($row["present"] > 0) : ?>
+                                                &#9989;
+                                            <?php else : ?>
+                                                &#10060;
+                                            <?php endif; ?>
+                                        </td>
                                         <td>
                                             <form action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
                                                 <input type="submit" name="attendance" class="btn-flat" value="mark present">
@@ -107,7 +122,7 @@ if(isset($_POST["attendance"])) {
                                 </tbody>
                             </table>
 
-                        <?php
+                            <?php
                         }
                     }
                     ?>
@@ -118,31 +133,20 @@ if(isset($_POST["attendance"])) {
 </div>
 
 <script
-    src="https://code.jquery.com/jquery-3.2.1.js"
-    integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
-    crossorigin="anonymous"></script>
+        src="https://code.jquery.com/jquery-3.2.1.js"
+        integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+        crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 <script type="text/javascript">
     $(function () {
-       $('.modal').modal();
-
-
+        $('.modal').modal();
     });
+
     function studentPresent(id) {
-        let mark = document.querySelector("#present"+id);
+        let mark = document.querySelector("#present" + id);
         mark.innerHTML = '&#9989';
     }
-    function updateStudent() {
-        $.ajax({
-            type: "POST",
-            url: 'your_url/ajax.php',
-            data:{action:'students.php'},
-            success:function() {
-                alert(123);
-            }
 
-        });
-    }
 </script>
 </body>
 </html>
