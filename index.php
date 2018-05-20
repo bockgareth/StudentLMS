@@ -24,8 +24,6 @@
             <a href="#" class="brand-logo">Student LMS</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="index.php">Login</a></li>
-                <li><a href="badges.html">Sign up</a></li>
-                <li><a href="collapsible.html">JavaScript</a></li>
             </ul>
         </div>
     </div>
