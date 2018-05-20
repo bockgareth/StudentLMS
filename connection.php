@@ -6,7 +6,7 @@
  * Time: 11:33 AM
  */
 
-$conn = @new mysqli("localhost", "root", "", "StudentLMS");
+$conn = @new mysqli("localhost", "root", "", "test");
 
 if (!$conn) {
     echo "Unable to connect to database" . $conn->connect_errno;

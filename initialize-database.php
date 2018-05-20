@@ -34,7 +34,7 @@
                 <div class="card-content center">
                     <h3>Database successfully populated</h3><br>
                     <h5>Proceed to Login?<h5><br><br>
-                    <a href="login.php" class="btn">Login</a><br><br>
+                    <a href="index.php" class="btn">Login</a><br><br>
                     <?php
 
                     include "connection.php";
@@ -43,13 +43,15 @@
 
                     foreach ($users as $user) {
                         $data = explode(",", $user);
-                        $sql = "insert into students (first_name, last_name, email, cellphone, password)
+                        $sql = "insert into students (first_name, last_name, email, student_no, password)
 			                    values ('".$data[0]."', '".$data[1]."', '".$data[2]."', '".$data[3]."', '".$data[4]."')";
 
                         $conn->query($sql);
                         echo "<p>Student '".$data[0]."' added &#9989;</p><br>";
 
                     }
+
+                    include "load.php";
                     ?>
                 </div>
             </div>

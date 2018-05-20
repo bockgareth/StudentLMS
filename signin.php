@@ -6,6 +6,7 @@
  * Time: 6:16 PM
  */
 
+session_start();
 ?>
 
 <!doctype html>
@@ -44,6 +45,7 @@
                                 <label for="pass">Password</label>
                             </div>
                             <input type="submit" name="form" value="Login" class="btn">
+                            <a href="adminSignup.php">Sign up</a>
                         </form>
                         </div><?php
                     }
@@ -54,6 +56,8 @@
                         $email = htmlentities($_POST["email"]);
                         $pass = htmlentities($_POST["pass"]);
 
+                        $hashed = md5($pass);
+
 
                         $sql = "select * from security where email = '".$email."'";
 
@@ -63,12 +67,12 @@
                             if ($rowCount > 0) {
 
                                 while ($row = $result->fetch_assoc()) {
-                                    if ($row["email"] == $email) {
-
+                                    if ($row["email"] == $email && $row["password"] == trim($hashed)) {
+                                        $_SESSION["security"] = $row["first_name"]." ".$row["last_name"];
                                         ?>
                                         <form action="" method="post" class="center">
                                             <h5>Logged in as <?php echo $row["first_name"]." ".$row["last_name"]; ?></h5>
-                                            <img src="img/1.PNG" alt=""><br><br>
+                                            <img src="img/guard.PNG" alt=""><br><br>
                                             <a href="students.php" class="btn">Show students</a>
 
                                         </form>

@@ -6,6 +6,7 @@
  * Time: 4:33 PM
  */
 
+session_start();
 if (isset($_POST["attendance"])) {
     $attend = $_POST["attend"];
 
@@ -67,6 +68,8 @@ if (isset($_POST["attendance"])) {
         <div class="col s12">
             <div class="card">
                 <div class="card-content">
+                    <span class="card-title">Logged in as <?php echo $_SESSION['security']?></span>
+                    <img src="img/guard.PNG" width="75" height="75" alt="">
                     <span class="card-title">Students</span>
                     <?php
                     include "connection.php";
@@ -96,9 +99,7 @@ if (isset($_POST["attendance"])) {
                                         <td><?php echo $row["student_no"]; ?></td>
                                         <td><a href="#modal<?php echo $row['id'] ?>"
                                                class="btn waves-effect waves-light modal-trigger">Show picture</a></td>
-                                        <!--<td id="present<?php echo $row['id'] ?>"><a class="btn-flat left"
-                                                                                    onclick="studentPresent(<?php echo $row['id'] ?>)">&#10060;</a>
-                                        </td>-->
+
                                         <td>
                                             <?php if ($row["present"] > 0) : ?>
                                                 &#9989;

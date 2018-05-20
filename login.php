@@ -67,6 +67,8 @@ session_start();
                         $studentNo = htmlentities($_POST["studentNo"]);
                         $pass = htmlentities($_POST["pass"]);
 
+                        $hashed = md5($pass);
+
 
                         $sql = "select * from students where student_no = '".$studentNo."'";
 
@@ -76,7 +78,7 @@ session_start();
                             if ($rowCount > 0) {
 
                                 while ($row = $result->fetch_assoc()) {
-                                    if ($row["student_no"] == $studentNo) {
+                                    if ($row["student_no"] == $studentNo && $row["password"] == trim($hashed)) {
 
                                         $_SESSION['first'] = $row["first_name"];
                                         $_SESSION['last'] = $row["last_name"];
@@ -134,7 +136,7 @@ session_start();
                                 <h4>Last name:</h4>
                                 <h2>'.$_SESSION['last'].'</h2>
                                 <h4>Email:</h4>
-                                <h2>'.$_SESSION['email'].'</h2>
+                                <h2>'.$_SESSION['address'].'</h2>
                                 <h4>Student number:</h4>
                                 <h2>'.$_SESSION['studentNo'].'</h2>
                             </body>

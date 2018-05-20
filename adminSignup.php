@@ -32,29 +32,29 @@
                     <?php
 
                     function loadForm($first = "", $last = "", $email = "", $pass = "") { ?>
-                    <span class="card-title">Please consider signing up</span>
-                    <div class="row">
-                        <form action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
-                            <div class="input-field col s12">
-                                <input id="first" type="text" name="first" value="<?php echo $first ?>" required>
-                                <label for="first">First name</label>
-                            </div>
-                            <div class="input-field col s12">
-                                <input id="last" type="text" name="last" value="<?php echo $last ?>" required>
-                                <label for="last">Last name</label>
-                            </div>
-                            <div class="input-field col s12">
-                                <input id="email" type="text" name="email" value="<?php echo $email ?>" required>
-                                <label for="email">Email</label>
-                            </div>
-                            <div class="input-field col s12">
-                                <input id="pass" type="password" minlength="8" name="pass" value="<?php echo $pass ?>" required>
-                                <label for="pass">Password</label>
-                            </div>
-                            <input type="submit" name="form" value="Sign up" class="btn">
-                        </form>
-                    </div>
-                    <?php
+                        <span class="card-title">Please consider signing up</span>
+                        <div class="row">
+                            <form action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post">
+                                <div class="input-field col s12">
+                                    <input id="first" type="text" name="first" value="<?php echo $first ?>" required>
+                                    <label for="first">First name</label>
+                                </div>
+                                <div class="input-field col s12">
+                                    <input id="last" type="text" name="last" value="<?php echo $last ?>" required>
+                                    <label for="last">Last name</label>
+                                </div>
+                                <div class="input-field col s12">
+                                    <input id="email" type="text" name="email" value="<?php echo $email ?>" required>
+                                    <label for="email">Email</label>
+                                </div>
+                                <div class="input-field col s12">
+                                    <input id="pass" type="password" minlength="8" name="pass" value="<?php echo $pass ?>" required>
+                                    <label for="pass">Password</label>
+                                </div>
+                                <input type="submit" name="form" value="Sign up" class="btn">
+                            </form>
+                        </div>
+                        <?php
                     }
 
                     if (isset($_POST["form"])) {
@@ -75,16 +75,13 @@
                                 loadForm($first, $last, $email, $pass);
                             } else {
 
-                                $genStudentNo = rand(100000000, 999999999);
-                                $sql = "insert into students (first_name, last_name, email, student_no, password)
-			                    values ('".$first."', '".$last."', '".$email."', '".$genStudentNo."', '".$pass."')";
+                                $sql = "insert into security (first_name, last_name, email, password)
+			                    values ('".$first."', '".$last."', '".$email."', '".$pass."')";
 
                                 $conn->query($sql);
-
-
-                                echo "<p>Student '".$first." ".$last."' added with the student number ".$genStudentNo." &#9989;</p><br>";
+                                echo "<p>Admin '".$first." ".$last."' added &#9989;</p><br>";
                                 echo "<h4>Thank you for signing up!</h4>";
-                                ?><a href="login.php" class="btn">Login</a> <?php
+                                ?><a href="signin.php" class="btn">Login</a> <?php
                             }
 
                         }
